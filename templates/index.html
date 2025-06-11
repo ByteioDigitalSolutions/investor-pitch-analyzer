@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Investor Pitch Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <h1>Investor Pitch Analyzer</h1>
+  <h3>Text Pitch</h3>
+  <textarea id="pitch"></textarea>
+  <button onclick="analyzeText()">Analyze Text</button>
+  <h3>Upload Audio/Video Pitch</h3>
+  <input type="file" id="mediaFile">
+  <button onclick="analyzeMedia()">Analyze Media</button>
+  <div id="result"></div>
+</div>
+<script>
+  async function analyzeText() {
+    const res = await fetch('/analyze_text', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({pitch: document.getElementById('pitch').value})
+    });
+    const data = await res.json();
+    document.getElementById('result').innerHTML = JSON.stringify(data, null, 2);
+  }
+  async function analyzeMedia() {
+    const fd = new FormData();
+    fd.append('file', document.getElementById('mediaFile').files[0]);
+    const res = await fetch('/analyze_media', {method:'POST', body:fd});
+    const data = await res.json();
+    document.getElementById('result').innerHTML = JSON.stringify(data, null, 2);
+  }
+</script>
+</body>
+</html>
