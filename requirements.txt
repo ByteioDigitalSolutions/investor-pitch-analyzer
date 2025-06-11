@@ -1,0 +1,8 @@
+Flask
+transformers
+torch
+nltk
+keybert
+moviepy
+SpeechRecognition
+gunicorn
